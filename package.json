@@ -1,0 +1,19 @@
+{
+    "name": "neighborhood-map",
+    "version": "1.0.0",
+    "description": "A platform that shows you certain attractions in your neighborhood",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "neighborhood",
+        "map"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ziadalame/forntend-nanodegree-neighborhood-map"
+    },
+    "author": "Ziad Alame",
+    "license": "MIT"
+}
