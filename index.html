@@ -20,29 +20,28 @@
         <![endif]-->
 </head>
 
-<body>
-
+<body data-bind="css: { 'menu-visible' : isMenuVisible }">
 
     <div class="container-fluid">
         <div class="row">
-            <div id="menu" class="col-sm-4 col-lg-2">
-                <h3>24/7 Cafes Map</h3>
-                <div class="search">
-                    <input type="text" class="form-control" placeholder="Search for..." type="filter" data-bind="textInput: searchQuery" />
+            <div id="menu">
+                <div class="menu-container">
+                    <h3>24/7 Cafes Map</h3>
+                    <div class="search">
+                        <input type="text" class="form-control" placeholder="Search for..." type="filter" data-bind="textInput: searchQuery" />
+                    </div>
+                    <div>
+                        <ul data-bind="foreach: cafeList">
+                            <li data-bind="text: name, click: $parent.showInfoWindowForCafe, visible: isVisible"></li>
+                        </ul>
+                    </div>
                 </div>
-                <div>
-                    <ul data-bind="foreach: cafeList">
-                        <li data-bind="text: name, click: $parent.showInfoWindowForCafe, visible: isVisible"></li>
-                    </ul>
+                <div class="menu-toggler">
+                    <button class="btn btn-default" data-bind="click: toggleMenu"><i class="glyphicon glyphicon-menu-hamburger"></i></button>
                 </div>
             </div>
 
-            <div id="map-container" class="col-sm-8 col-lg-10">
-                <div id="map" class="col-xs-12"></div>
-                <div class="menu-toggle">
-                    <button class="btn btn-default"><i class="glyphicon glyphicon-menu-hamburger"></i></button>
-                </div>
-            </div>
+            <div id="map" class="col-xs-12"></div>
         </div>
     </div>
 

@@ -1,6 +1,5 @@
 html,
 body,
-#map-container,
 #map,
 .container-fluid,
 .container-fluid>.row,
@@ -8,12 +7,43 @@ body,
     height: 100%;
 }
 
-.menu-toggle {
+#menu {
     position: absolute;
+    height: 100%;
+    z-index: 1;
+    background-color: white;
+    border-right: 1px solid #ccc;
+    transition: 2s linear all;
+}
+
+#menu .menu-container {
+    display: none;
+}
+
+.menu-visible #menu .menu-container {
+    width: 300px;
+    padding: 15px;
+    display: block
+}
+
+#menu .menu-toggler {
+    position: absolute;
+    right: -39px;
     top: 100px;
 }
 
-.menu-toggle .btn.btn-default {
+#menu .menu-toggler button {
     border-radius: 0;
     border-left: 0;
+    outline: 0;
+}
+
+#menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+#menu li {
+    cursor: pointer;
+    margin: 15px 0;
 }
