@@ -23,7 +23,29 @@
 <body>
 
 
-    <div id="map"></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div id="menu" class="col-sm-4 col-lg-2">
+                <h3>24/7 Cafes Map</h3>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn"><button class="btn btn-default" type="button">Go!</button></span>
+                </div>
+                <div>
+                    <ul>
+                        <li>test</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="map-container" class="col-sm-8 col-lg-10">
+                <div id="map" class="col-xs-12"></div>
+                <div class="menu-toggle">
+                    <button>test</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- jQuery -->
     <script src="node_modules/jquery/dist/jquery.min.js"></script>

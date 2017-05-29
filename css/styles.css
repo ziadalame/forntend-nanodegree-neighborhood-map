@@ -1,6 +1,13 @@
 html,
 body,
-#map {
+#map-container,
+#map,
+.container-fluid,
+.container-fluid>.row,
+.container-fluid>.row .menu {
     height: 100%;
-    width: 100%;
+}
+
+.map-toggle {
+    position: absolute;
 }
