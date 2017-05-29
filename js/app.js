@@ -15,15 +15,9 @@ function initApp() {
     var request = {
         location: newYork,
         type: 'cafe',
-        radius: 5000,
+        radius: 10000,
         query: 'open 24'
     };
-
-    
-    var marker = new google.maps.Marker({
-        map: map,
-        position: newYork
-    });
 
     service = new google.maps.places.PlacesService(map);
     service.textSearch(request, callback);
