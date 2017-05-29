@@ -8,6 +8,12 @@ body,
     height: 100%;
 }
 
-.map-toggle {
+.menu-toggle {
     position: absolute;
+    top: 100px;
+}
+
+.menu-toggle .btn.btn-default {
+    border-radius: 0;
+    border-left: 0;
 }

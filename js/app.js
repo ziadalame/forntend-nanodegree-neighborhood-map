@@ -1,6 +1,7 @@
 var map;
 var service;
 var infowindow;
+var allCafes;
 
 function initApp() {
     var newYork = new google.maps.LatLng(40.730610, -73.935242);
@@ -20,27 +21,54 @@ function initApp() {
     };
 
     service = new google.maps.places.PlacesService(map);
-    service.textSearch(request, callback);
-};
-
-function callback(results, status) {
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-        for (var i = 0; i < results.length; i++) {
-            var place = results[i];
-            createMarker(results[i]);
+    service.textSearch(request, function (results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+            allCafes = results;
+            ko.applyBindings(new ViewModel());
         }
-    }
+    });
 };
 
-function createMarker(place) {
-    var placeLoc = place.geometry.location;
-    var marker = new google.maps.Marker({
+// Cafe constructor
+var Cafe = function (data) {
+    // Map the properties from the places object to the cafe object and make them observables
+    this.formatted_address = ko.observable(data.formatted_address);
+    this.gMapsId = ko.observable(data.id);
+    this.name = ko.observable(data.name);
+    this.placeId = ko.observable(data.place_id);
+    this.priceLevel = ko.observable(data.price_level);
+    this.rating = ko.observable(data.rating);
+    this.reference = ko.observable(data.reference);
+    this.tags = ko.observable(data.types);
+
+    // create a marker object for every cafe
+    this.marker = new google.maps.Marker({
         map: map,
-        position: place.geometry.location
+        position: data.geometry.location
     });
 
-    google.maps.event.addListener(marker, 'click', function () {
-        infowindow.setContent(place.name);
+    // Add listener for marker and set content
+    google.maps.event.addListener(this.marker, 'click', function () {
+        infowindow.setContent(data.name);
         infowindow.open(map, this);
     });
+
+};
+
+var ViewModel = function () {
+    // get reference for VM context
+    var self = this;
+    var marker;
+
+    // An observanle array of cafes to keep track - start with an empty array
+    this.cafeList = ko.observableArray([]);
+
+    // data is a single cafe
+    allCafes.forEach(function (data) {
+        self.cafeList.push(new Cafe(data));
+    });
+
+    this.showInfoWindowForCafe = function (cafe) {
+        google.maps.event.trigger(cafe.marker, 'click');
+    }
 };
