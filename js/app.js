@@ -53,6 +53,9 @@ var Cafe = function (data) {
         infowindow.open(map, this);
     });
 
+
+    // filtering variables
+    this.isVisible = ko.observable(true);
 };
 
 var ViewModel = function () {
@@ -71,4 +74,21 @@ var ViewModel = function () {
     this.showInfoWindowForCafe = function (cafe) {
         google.maps.event.trigger(cafe.marker, 'click');
     }
+
+    // Filter by user input
+    this.searchQuery = ko.observable('');
+    this.filterCafes = ko.computed(function () {
+        var query = self.searchQuery().toLowerCase();
+        if (query.length > 0) {
+            // close any open info window to avoid hiding pin and keeping info window
+            infowindow.close();
+            // Filter the observable and hide misfits
+            ko.utils.arrayFilter(self.cafeList(), function (cafe) {
+                // manage item in list
+                cafe.isVisible(cafe.name().toLowerCase().indexOf(query) !== -1);
+                // manage item in google maps
+                cafe.marker.setVisible(cafe.name().toLowerCase().indexOf(query) !== -1);
+            });
+        }
+    });
 };
