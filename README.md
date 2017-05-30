@@ -18,8 +18,8 @@ As a person who likes to develop at night and enjoys coffee shops, it is a hastl
 - To deploy on your machine, follow the below steps:
 
 ```
-$ git clone git@github.com:ziadalame/frontend-nanodegree-neighborhood-map.git
-$ cd frontend-nanodegree-neighborhood-map
+$ git clone git clone git@github.com:ziadalame/forntend-nanodegree-neighborhood-map.git
+$ cd forntend-nanodegree-neighborhood-map
 $ open index.html
 ```
 
