@@ -10,7 +10,7 @@ As a person who likes to develop at night and enjoys coffee shops, it is a hastl
 
 ## Project Screenshot
 
-![Neighborhood Map CoffeeShops 24/7 Screenshot](https://github.com/ziadalame/forntend-nanodegree-neighborhood-map/blob/master/images/screenshot.png?raw=true)
+![Neighborhood Map CoffeeShops 24/7 Screenshot](https://raw.githubusercontent.com/ziadalame/forntend-nanodegree-neighborhood-map/master/images/sc.png)
 
 ## Getting started
 
