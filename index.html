@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Neighborhood Map</title>
+    <meta name="author" content="Ziad Alame">
+    <title>Neighborhood Map for Cafes in NewYork</title>
 
     <!-- Bootstrap CSS -->
     <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -25,6 +26,7 @@
     <div class="container-fluid">
         <div class="row">
             <div id="menu">
+                <!-- The menu on the left -->
                 <div class="menu-container">
                     <h3>24/7 Cafes Map</h3>
                     <div class="search">
@@ -36,16 +38,19 @@
                         </ul>
                     </div>
                 </div>
+
+                <!-- Menu that toggles menu -->
                 <div class="menu-toggler">
                     <button class="btn btn-default" data-bind="click: toggleMenu"><i class="glyphicon glyphicon-menu-hamburger"></i></button>
                 </div>
             </div>
 
+            <!-- Map container -->
             <div id="map" class="col-xs-12"></div>
         </div>
     </div>
 
-
+    <!-- Template HTML for the infowindow || this will be used by handlebars -->
     <script id="cafe-window-template" type="text/x-handlebars-template">
         <div class="cafe-info-window">
             <h3>{{name}}</h3>
@@ -79,7 +84,7 @@
     <!-- App initializer -->
     <script src="js/app.js"></script>
     <!-- Maps/Places API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6HfR-FJ-5L5V-4nyO0PnvtExJx4Rkne4&libraries=places&callback=initApp"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6HfR-FJ-5L5V-4nyO0PnvtExJx4Rkne4&libraries=places&callback=initApp" async defer></script>
 </body>
 
 </html>
