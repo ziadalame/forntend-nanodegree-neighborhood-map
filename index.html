@@ -45,12 +45,37 @@
         </div>
     </div>
 
+
+    <script id="cafe-window-template" type="text/x-handlebars-template">
+        <div class="cafe-info-window">
+            <h3>{{name}}</h3>
+            <h6>{{formatted_address}}</h6>
+            <div class="body">
+                <!-- Check if image exists -->
+                {{#if photo}} <img src="{{photo}}" width="300px" /> {{/if}}
+                <!-- More details -->
+                <div>
+                    <!-- Check if rating exists -->
+                    {{#if rating}}
+                    <p><strong>Rating</strong>: {{rating}}</p>
+                    {{/if}}
+                    <!-- Check if price_level exists -->
+                    {{#if price_level}}
+                    <p><strong>Price Range</strong>: {{priceRange price_level}}</p>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </script>
+
     <!-- jQuery -->
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap JavaScript -->
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- Knockout JS -->
     <script src="node_modules/knockout/build/output/knockout-latest.js"></script>
+    <!-- Handlebars JS -->
+    <script src="node_modules/handlebars/dist/handlebars.min.js"></script>
     <!-- App initializer -->
     <script src="js/app.js"></script>
     <!-- Maps/Places API -->

@@ -3,6 +3,16 @@ var service;
 var infowindow;
 var allCafes;
 
+function infoWindowHTML(cafe) {
+    // fix data to pass a string url to the template
+    cafe.photo = typeof cafe.photos !== 'undefined' ? cafe.photos[0].getUrl({'maxWidth': 300, 'maxHeight': 300}) : 'https://placehold.it/200/100';
+    
+    var source = $("#cafe-window-template").html();
+    var template = Handlebars.compile(source);
+    
+    return template(cafe);
+}
+
 function initApp() {
     var newYork = new google.maps.LatLng(40.730610, -73.935242);
 
@@ -40,6 +50,10 @@ var Cafe = function (data) {
     this.rating = ko.observable(data.rating);
     this.reference = ko.observable(data.reference);
     this.tags = ko.observable(data.types);
+    this.lat = ko.observable(data.geometry.location.lat());
+    this.lng = ko.observable(data.geometry.location.lng());
+
+    this.photo = typeof data.photos !== 'undefined' ? ko.observable(data.photos[0].getUrl({'maxWidth': 300, 'maxHeight': 100})) : ko.observable('https://placehold.it/200/100');
 
     // create a marker object for every cafe
     this.marker = new google.maps.Marker({
@@ -49,7 +63,7 @@ var Cafe = function (data) {
 
     // Add listener for marker and set content
     google.maps.event.addListener(this.marker, 'click', function () {
-        infowindow.setContent(data.name);
+        infowindow.setContent(infoWindowHTML(data));
         infowindow.open(map, this);
     });
 
@@ -95,3 +109,15 @@ var ViewModel = function () {
         self.isMenuVisible(!self.isMenuVisible());
     };
 };
+
+
+
+// Handlebars
+
+Handlebars.registerHelper('priceRange', function (range) {
+    var temp = '';
+    for (var i = 0; i < range; i++) {
+        temp += '$';
+    }
+    return temp;
+});

@@ -47,3 +47,7 @@ body,
     cursor: pointer;
     margin: 15px 0;
 }
+
+.cafe-info-window img {
+    margin-bottom: 15px;
+}
