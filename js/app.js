@@ -3,6 +3,10 @@ var service;
 var infowindow;
 var allCafes;
 
+var foursquare = {
+    id: 'RYINVIBWFMYQTQSQTA00OFUELYHZFRN5BPHVJV55V3AKNIQZ',
+    secret: 'MM1KRKEAA04011T40RLPUFUCNWNOCGD0ZINHTBSPTY4J1CJ3'
+}
 
 // Show error after 10 if google maps isn't ready
 setTimeout(function () {
@@ -75,19 +79,31 @@ var Cafe = function (data) {
     // Add listener for marker and set content
     google.maps.event.addListener(this.marker, 'click', function () {
         // Marker animation
+        var that = this;
         if (self.marker.getAnimation() === null) {
             // start bouncing
             self.marker.setAnimation(google.maps.Animation.BOUNCE);
-            // stop bouncing after 1s
-            setTimeout(function () {
-                self.marker.setAnimation(null);
-            }, 1000);
         }
         // Center map on selecter pin
         map.setCenter(data.geometry.location);
-        // Add content and show info windo
-        infowindow.setContent(infoWindowHTML(data));
-        infowindow.open(map, this);
+        // Add content and show info window
+        $.ajax({
+            type: 'GET',
+            url: 'https://api.foursquare.com/v2/venues/search?v=20170101&query=' + encodeURI(data.name) + '&ll=' + data.geometry.location.lat() + ',' + data.geometry.location.lng() + '&limit=1&client_id=' + foursquare.id + '&client_secret=' + foursquare.secret,
+        }).success(function (foursquareData) {
+            self.foursquare = ko.observable(foursquareData.response.venues[0]);
+            data.foursquare = foursquareData.response.venues[0];
+            console.log(foursquareData);
+        }).fail(function (response, error) {
+            console.log('error');
+            console.log(error);
+        }).always(function () {
+            infowindow.setContent(infoWindowHTML(data));
+            infowindow.open(map, that);
+            self.marker.setAnimation(null);
+        });
+
+
     });
 
     // filtering variables
@@ -151,6 +167,9 @@ Handlebars.registerHelper('priceRange', function (range) {
     return temp;
 });
 
+Handlebars.registerHelper( 'concat', function(s1, s2) {
+    return s1 + s2;
+});
 
 // Helper functions
 

@@ -71,6 +71,26 @@
                     {{#if price_level}}
                     <p><strong>Price Range</strong>: {{priceRange price_level}}</p>
                     {{/if}}
+                    <!-- Foursquare section -->
+                    {{#foursquare}}
+                    <!-- Contact Details -->
+                    {{#contact}}
+                    <!-- Formatted phone-->{{#if formattedPhone}}
+                    <p><strong>Phone</strong>: {{formattedPhone}}</p>{{/if}}
+                    <!--Facebook-->
+                    {{#if facebookUserName}}
+                    <p><strong>Facebook</strong>: <a href="{{concat 'https://facebook.com/' facebookUsername}}" target="_blank">https://fb.com/{{facebookUsername}}</a></p>{{/if}}
+                    <!--twitter-->
+                    {{#if twitter}}
+                    <p><strong>twitter</strong>: <a href="{{concat 'https://twitter.com/' twitter}}" target="_blank">@{{twitter}}</a></p>{{/if}} {{/contact}}
+                    <!-- Foursquare page -->
+                    <p><strong>Foursquare</strong>: <a href="{{concat 'https://foursquare.com/venue/' id}}" target="_blank">{{name}}</a></p>
+                    <!-- URL -->
+                    {{#if url}}
+                    <p><strong>website</strong>: <a href="{{url}}" target="_blank">{{url}}</a></p>{{/if}}
+                    <!--End of foursquare section-->
+                    {{/foursquare}}
+                    <small>Data powered by <a href="{{concat 'https://foursquare.com/v/' foursquare.id}}" target="_blank">Foursquare</a> & <a href="https://www.google.com/maps/search/?api=1&query={{name}}&query_place_id={{place_id}}" target="_blank">Google Maps</a></small>
                 </div>
             </div>
         </div>
