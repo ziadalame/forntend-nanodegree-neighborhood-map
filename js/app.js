@@ -3,7 +3,8 @@ var service;
 var infowindow;
 var allCafes;
 
-var foursquare = {
+// Foursquare api credentials
+var FOURSQUARE_CREDENTIALS = {
     id: 'RYINVIBWFMYQTQSQTA00OFUELYHZFRN5BPHVJV55V3AKNIQZ',
     secret: 'MM1KRKEAA04011T40RLPUFUCNWNOCGD0ZINHTBSPTY4J1CJ3'
 }
@@ -89,15 +90,17 @@ var Cafe = function (data) {
         // Add content and show info window
         $.ajax({
             type: 'GET',
-            url: 'https://api.foursquare.com/v2/venues/search?v=20170101&query=' + encodeURI(data.name) + '&ll=' + data.geometry.location.lat() + ',' + data.geometry.location.lng() + '&limit=1&client_id=' + foursquare.id + '&client_secret=' + foursquare.secret,
+            url: 'https://api.foursquare.com/v2/venues/search?v=20170101&query=' + encodeURI(data.name) + '&ll=' + data.geometry.location.lat() + ',' + data.geometry.location.lng() + '&limit=1&client_id=' + FOURSQUARE_CREDENTIALS.id + '&client_secret=' + FOURSQUARE_CREDENTIALS.secret,
         }).success(function (foursquareData) {
+            // Assign content on success to variables
             self.foursquare = ko.observable(foursquareData.response.venues[0]);
             data.foursquare = foursquareData.response.venues[0];
-            console.log(foursquareData);
         }).fail(function (response, error) {
+            // Log error. This will not break the system. It will fail silently
             console.log('error');
             console.log(error);
         }).always(function () {
+            // Always display the info window since we already have data from gmaps.
             infowindow.setContent(infoWindowHTML(data));
             infowindow.open(map, that);
             self.marker.setAnimation(null);
@@ -167,6 +170,7 @@ Handlebars.registerHelper('priceRange', function (range) {
     return temp;
 });
 
+// Concatinte 2 strings
 Handlebars.registerHelper( 'concat', function(s1, s2) {
     return s1 + s2;
 });
