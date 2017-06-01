@@ -31,6 +31,7 @@ $ open index.html
 - [x] Overlay a collasible menu with list of coffee shops
 - [x] Add filtering option
 - [x] Add information for every coffee shop in an info window
+- [x] Get further information to display from the (foursquare api)[https://developer.foursquare.com/]
 - [ ] Add the ability to change the city 
 
 ## Authors
