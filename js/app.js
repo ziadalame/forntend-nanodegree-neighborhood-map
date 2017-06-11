@@ -52,18 +52,18 @@ var Cafe = function (data) {
     var self = this;
 
     // Map the properties from the places object to the cafe object and make them observables
-    this.formatted_address = ko.observable(data.formatted_address);
-    this.gMapsId = ko.observable(data.id);
-    this.name = ko.observable(data.name);
-    this.placeId = ko.observable(data.place_id);
-    this.priceLevel = ko.observable(data.price_level);
-    this.rating = ko.observable(data.rating);
-    this.reference = ko.observable(data.reference);
-    this.tags = ko.observable(data.types);
-    this.lat = ko.observable(data.geometry.location.lat());
-    this.lng = ko.observable(data.geometry.location.lng());
+    this.formatted_address = data.formatted_address;
+    this.gMapsId = data.id;
+    this.name = data.name;
+    this.placeId = data.place_id;
+    this.priceLevel = data.price_level;
+    this.rating = data.rating;
+    this.reference = data.reference;
+    this.tags = data.types;
+    this.lat = data.geometry.location.lat();
+    this.lng = data.geometry.location.lng();
     // Make sure there is a photo
-    this.photo = typeof data.photos !== 'undefined' ? ko.observable(data.photos[0].getUrl({ 'maxWidth': 300, 'maxHeight': 100 })) : ko.observable('https://placehold.it/200/100');
+    this.photo = typeof data.photos !== 'undefined' ? data.photos[0].getUrl({ 'maxWidth': 300, 'maxHeight': 100 }) : 'https://placehold.it/200/100';
 
     // create a marker object for every cafe
     this.marker = new google.maps.Marker({
@@ -137,9 +137,9 @@ var ViewModel = function () {
         // Filter the observable and hide misfits
         ko.utils.arrayFilter(self.cafeList(), function (cafe) {
             // manage item in list
-            cafe.isVisible(cafe.name().toLowerCase().indexOf(query) !== -1);
+            cafe.isVisible(cafe.name.toLowerCase().indexOf(query) !== -1);
             // manage item in google maps
-            cafe.marker.setVisible(cafe.name().toLowerCase().indexOf(query) !== -1);
+            cafe.marker.setVisible(cafe.name.toLowerCase().indexOf(query) !== -1);
         });
     });
 
