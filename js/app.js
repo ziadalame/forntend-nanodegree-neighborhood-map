@@ -95,13 +95,18 @@ var Cafe = function (data) {
             type: 'GET',
             url: 'https://api.foursquare.com/v2/venues/search?v=20170101&query=' + encodeURI(data.name) + '&ll=' + data.geometry.location.lat() + ',' + data.geometry.location.lng() + '&limit=1&client_id=' + FOURSQUARE_CREDENTIALS.id + '&client_secret=' + FOURSQUARE_CREDENTIALS.secret,
         }).success(function (foursquareData) {
-            // Assign content on success to variables
-            self.foursquare = ko.observable(foursquareData.response.venues[0]);
-            data.foursquare = foursquareData.response.venues[0];
+            // Assign content on success to variables with fallbacks for missing data
+            data.foursquare = {
+                id: foursquareData.response.venues[0].id,
+                formattedPhone: foursquareData.response.venues[0].contact.formattedPhone ? foursquareData.response.venues[0].contact.formattedPhone : 'Not available via Foursquare',
+                url: foursquareData.response.venues[0].url ? '<a href="' + foursquareData.response.venues[0].url + '" target="_blank">' + foursquareData.response.venues[0].url + '<a/>' : 'Not available via Foursquare',
+                facebookUsername: foursquareData.response.venues[0].contact.facebookUsername ? '<a href="https://fb.com/" ' + foursquareData.response.venues[0].contact.facebookUsername + ' target="_blank">https://fb.com/' + foursquareData.response.venues[0].contact.facebookUsername + '</a>' : 'Not available via Foursquare',
+                twitter: foursquareData.response.venues[0].contact.twitter ? '<a href="https://twitter.com/" ' + foursquareData.response.venues[0].contact.twitter + ' target="_blank">@' + foursquareData.response.venues[0].contact.twitter + '</a>' : 'Not available via Foursquare'
+            };
+
         }).fail(function (response, error) {
             // Log error. This will not break the system. It will fail silently
-            console.log('error');
-            console.log(error);
+            data.error = true;
         }).always(function () {
             // Always display the info window since we already have data from gmaps.
             infowindow.setContent(infoWindowHTML(data));
@@ -111,7 +116,7 @@ var Cafe = function (data) {
 
 
     });
-
+    // '<div class="cafe-info-window"><h3>' + name + '</h3><h6>' + formatted_address + '</h6><div class="body"><img src="' + photo + '" width="300px" /> <div><p><strong>Rating</strong>: ' + rating + '</p><p><strong>Price Range</strong>: ' + price_level + '</p><p><strong>Phone</strong>: ' + formattedPhone + '</p><p><strong>Facebook</strong>: <a href="https://facebook.com/' + facebookUsername + '" target="_blank">https://fb.com/' + facebookUsername + '</a></p><p><strong>twitter</strong>: <a href="https://twitter.com/' + twitter + '" target="_blank">@' + twitter + '</a></p><p><strong>Foursquare</strong>: <a href="https://foursquare.com/venue/' + id + '" target="_blank">' + name + '</a></p><p><strong>website</strong>: <a href="' + url + '" target="_blank">' + url + '</a></p><small>Data powered by <a href="https://foursquare.com/v/' + foursquare.id + '" target="_blank">Foursquare</a> & <a href="https://www.google.com/maps/search/?api=1&query=' + name + '&query_place_id=' + place_id + '" target="_blank">Google Maps</a></small></div></div></div>'
     // filtering variables
     this.isVisible = ko.observable(true);
 };
@@ -162,35 +167,23 @@ var ViewModel = function () {
     };
 };
 
-
-
-// Handlebars Helpers
-
-// Return a symbol of proce rang
-// $ => cheap || $$ => more expensive || $$$ => even more expensive || etc.
-Handlebars.registerHelper('priceRange', function (range) {
-    var temp = '';
-    for (var i = 0; i < range; i++) {
-        temp += '$';
-    }
-    return temp;
-});
-
-// Concatinte 2 strings
-Handlebars.registerHelper('concat', function (s1, s2) {
-    return s1 + s2;
-});
-
 // Helper functions
 
 // Generate infowindow HTML dynamically with handlebase
 function infoWindowHTML(cafe) {
-    // fix data to pass a string url to the template
-    cafe.photo = typeof cafe.photos !== 'undefined' ? cafe.photos[0].getUrl({ 'maxWidth': 300, 'maxHeight': 300 }) : 'https://placehold.it/200/100';
-    // Get HTML
-    var source = $("#cafe-window-template").html();
-    // Compile HTML to understand it and fill data afterwards
-    var template = Handlebars.compile(source);
-    // Return populated HTML with data
-    return template(cafe);
+    return '<div class="cafe-info-window"><h3>' + cafe.name + '</h3><h6>' + cafe.formatted_address + '</h6><div class="body"><img src="' + cafe.photos[0].getUrl({ maxWidth: 300, maxHeight: 200 }) + '" width="300px" /> <div><p><strong>Rating</strong>: ' + cafe.rating + '/5</p><p><strong>Price Range</strong>: ' + setPriceRange(cafe.price_level) + '</p><p><strong>Phone</strong>: ' + cafe.foursquare.formattedPhone + '</p><p><strong>Facebook</strong>: ' + cafe.foursquare.facebookUsername + '</p><p><strong>twitter</strong>: ' + cafe.foursquare.twitter + '</p><p><strong>Foursquare Page</strong>: <a href="https://foursquare.com/venue/' + cafe.foursquare.id + '" target="_blank">' + cafe.name + '</a></p><p><strong>website</strong>: ' + cafe.foursquare.url + '</p><small>Data powered by <a href="https://foursquare.com/v/' + cafe.foursquare.id + '" target="_blank">Foursquare</a> & <a href="https://www.google.com/maps/search/?api=1&query=' + cafe.name + '&query_place_id=' + cafe.place_id + '" target="_blank">Google Maps</a></small></div></div></div>';
 }
+
+// Return a symbol of price range
+// $ => cheap || $$ => more expensive || $$$ => even more expensive || etc.
+function setPriceRange(range) {
+    if (range) {
+        var temp = '';
+        for (var i = 0; i < range; i++) {
+            temp += '$';
+        }
+        return temp;
+    }
+
+    return 'Not available';
+};
