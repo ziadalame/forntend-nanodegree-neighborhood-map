@@ -7,7 +7,7 @@ var allCafes;
 var FOURSQUARE_CREDENTIALS = {
     id: 'RYINVIBWFMYQTQSQTA00OFUELYHZFRN5BPHVJV55V3AKNIQZ',
     secret: 'MM1KRKEAA04011T40RLPUFUCNWNOCGD0ZINHTBSPTY4J1CJ3'
-}
+};
 
 // Show error if google maps isn't loaded properly
 function handleMapError() {
@@ -44,7 +44,7 @@ function initApp() {
             ko.applyBindings(new ViewModel());
         }
     });
-};
+}
 
 // Cafe Model
 var Cafe = function (data) {
@@ -126,7 +126,7 @@ var ViewModel = function () {
     // trigger infowindow to open
     this.showInfoWindowForCafe = function (cafe) {
         google.maps.event.trigger(cafe.marker, 'click');
-    }
+    };
 
     // Filter by user input
     this.searchQuery = ko.observable('');
