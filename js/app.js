@@ -9,14 +9,10 @@ var FOURSQUARE_CREDENTIALS = {
     secret: 'MM1KRKEAA04011T40RLPUFUCNWNOCGD0ZINHTBSPTY4J1CJ3'
 }
 
-// Show error after 10 if google maps isn't ready
-setTimeout(function () {
-    if (!window.google || !window.google.maps) {
-        $('#map').css('text-align', 'center');
-        $('#map').html('<h2>We are sorry for the inconvinience but an error has occurred. Please try refreshing the page.</h2>');
-    }
-}, 5000);
-
+// Show error if google maps isn't loaded properly
+function handleMapError() {
+    document.getElementById('map').innerHTML = '<h2>We are sorry for the inconvinience but an error has occurred. Please try refreshing the page, or check your internet connection.</h2>';
+}
 
 // Initialize after map api has been loaded
 function initApp() {
@@ -171,7 +167,7 @@ Handlebars.registerHelper('priceRange', function (range) {
 });
 
 // Concatinte 2 strings
-Handlebars.registerHelper( 'concat', function(s1, s2) {
+Handlebars.registerHelper('concat', function (s1, s2) {
     return s1 + s2;
 });
 
