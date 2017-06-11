@@ -190,4 +190,4 @@ function setPriceRange(range) {
     }
 
     return 'Not available';
-};
+}
