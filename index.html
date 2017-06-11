@@ -40,6 +40,9 @@
                             <li data-bind="text: name, click: $parent.showInfoWindowForCafe, visible: isVisible"></li>
                         </ul>
                     </div>
+                    <div data-bind="css: { 'hidden' : !isErrorVisible }">
+                        <div class="alert alert-danger" role="alert">An error has occurred. Please try again.</div>
+                    </div>
                 </div>
 
                 <!-- Menu that toggles menu -->

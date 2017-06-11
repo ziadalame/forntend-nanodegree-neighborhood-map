@@ -1,8 +1,8 @@
 var map;
 var service;
 var infowindow;
-var allCafes;
-
+var allCafes = [];
+var searchResultError;
 // Foursquare api credentials
 var FOURSQUARE_CREDENTIALS = {
     id: 'RYINVIBWFMYQTQSQTA00OFUELYHZFRN5BPHVJV55V3AKNIQZ',
@@ -38,11 +38,18 @@ function initApp() {
 
     service = new google.maps.places.PlacesService(map);
     service.textSearch(request, function (results, status) {
+
         if (status == google.maps.places.PlacesServiceStatus.OK) {
             allCafes = results;
-            // All is ready. Binding the ViewModel to the View
-            ko.applyBindings(new ViewModel());
+            // Indicate no errors
+            searchResultError = false;
+        } else {
+            // trigger error message
+            searchResultError = true;
         }
+
+        // All is ready. Binding the ViewModel to the View
+        ko.applyBindings(new ViewModel());
     });
 }
 
@@ -114,6 +121,9 @@ var ViewModel = function () {
     // get reference for VM context
     var self = this;
     var marker;
+
+    // Check if there is an error mess
+    this.isErrorVisible = searchResultError;
 
     // An observanle array of cafes to keep track - start with an empty array
     this.cafeList = ko.observableArray([]);
