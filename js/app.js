@@ -99,13 +99,14 @@ var Cafe = function (data) {
             data.foursquare = {
                 id: foursquareData.response.venues[0].id,
                 formattedPhone: foursquareData.response.venues[0].contact.formattedPhone ? foursquareData.response.venues[0].contact.formattedPhone : 'Not available via Foursquare',
-                url: foursquareData.response.venues[0].url ? '<a href="' + foursquareData.response.venues[0].url + '" target="_blank">' + foursquareData.response.venues[0].url + '<a/>' : 'Not available via Foursquare',
+                url: foursquareData.response.venues[0].url ? '<a href="' + foursquareData.response.venues[0].url + '" target="_blank">' + foursquareData.response.venues[0].url + '</a>' : 'Not available via Foursquare',
                 facebookUsername: foursquareData.response.venues[0].contact.facebookUsername ? '<a href="https://fb.com/" ' + foursquareData.response.venues[0].contact.facebookUsername + ' target="_blank">https://fb.com/' + foursquareData.response.venues[0].contact.facebookUsername + '</a>' : 'Not available via Foursquare',
                 twitter: foursquareData.response.venues[0].contact.twitter ? '<a href="https://twitter.com/" ' + foursquareData.response.venues[0].contact.twitter + ' target="_blank">@' + foursquareData.response.venues[0].contact.twitter + '</a>' : 'Not available via Foursquare'
             };
-
+            // No error to show
+            data.error = false;
         }).fail(function (response, error) {
-            // Log error. This will not break the system. It will fail silently
+            // Show user that an error has occured.
             data.error = true;
         }).always(function () {
             // Always display the info window since we already have data from gmaps.
@@ -116,7 +117,7 @@ var Cafe = function (data) {
 
 
     });
-    // '<div class="cafe-info-window"><h3>' + name + '</h3><h6>' + formatted_address + '</h6><div class="body"><img src="' + photo + '" width="300px" /> <div><p><strong>Rating</strong>: ' + rating + '</p><p><strong>Price Range</strong>: ' + price_level + '</p><p><strong>Phone</strong>: ' + formattedPhone + '</p><p><strong>Facebook</strong>: <a href="https://facebook.com/' + facebookUsername + '" target="_blank">https://fb.com/' + facebookUsername + '</a></p><p><strong>twitter</strong>: <a href="https://twitter.com/' + twitter + '" target="_blank">@' + twitter + '</a></p><p><strong>Foursquare</strong>: <a href="https://foursquare.com/venue/' + id + '" target="_blank">' + name + '</a></p><p><strong>website</strong>: <a href="' + url + '" target="_blank">' + url + '</a></p><small>Data powered by <a href="https://foursquare.com/v/' + foursquare.id + '" target="_blank">Foursquare</a> & <a href="https://www.google.com/maps/search/?api=1&query=' + name + '&query_place_id=' + place_id + '" target="_blank">Google Maps</a></small></div></div></div>'
+    // '<div class="cafe-info-window"><h3>' + name + '</h3><h6>' + formatted_address + '</h6><div class="body"><img src="' + photo + '" width="300px" /> <div><p><strong>Rating</strong>: ' + rating + '</p><p><strong>Price Range</strong>: ' + price_level + '</p><p><strong>Phone</strong>: ' + formattedPhone + '</p><p><strong>Facebook</strong>: <a href="https://facebook.com/' + facebookUsername + '" target="_blank">https://fb.com/' + facebookUsername + '</a></p><p><strong>twitter</strong>: <a href="https://twitter.com/' + twitter + '" target="_blank">@' + twitter + '</a></p><p><strong>Foursquare</strong>: <a href="https://foursquare.com/venue/' + id + '" target="_blank">' + name + '</a></p><p><strong>website</strong>: ' + url + '</p><p><small>Data powered by <a href="https://foursquare.com/v/' + foursquare.id + '" target="_blank">Foursquare</a> & <a href="https://www.google.com/maps/search/?api=1&query=' + name + '&query_place_id=' + place_id + '" target="_blank">Google Maps</a></small></p></div></div></div>'
     // filtering variables
     this.isVisible = ko.observable(true);
 };
@@ -171,6 +172,9 @@ var ViewModel = function () {
 
 // Generate infowindow HTML dynamically with handlebase
 function infoWindowHTML(cafe) {
+    if (cafe.error) {
+        return '<div class="alert alert-danger" role="alert">An error has occurred. Please try again.</div>';
+    }
     return '<div class="cafe-info-window"><h3>' + cafe.name + '</h3><h6>' + cafe.formatted_address + '</h6><div class="body"><img src="' + cafe.photos[0].getUrl({ maxWidth: 300, maxHeight: 200 }) + '" width="300px" /> <div><p><strong>Rating</strong>: ' + cafe.rating + '/5</p><p><strong>Price Range</strong>: ' + setPriceRange(cafe.price_level) + '</p><p><strong>Phone</strong>: ' + cafe.foursquare.formattedPhone + '</p><p><strong>Facebook</strong>: ' + cafe.foursquare.facebookUsername + '</p><p><strong>twitter</strong>: ' + cafe.foursquare.twitter + '</p><p><strong>Foursquare Page</strong>: <a href="https://foursquare.com/venue/' + cafe.foursquare.id + '" target="_blank">' + cafe.name + '</a></p><p><strong>website</strong>: ' + cafe.foursquare.url + '</p><small>Data powered by <a href="https://foursquare.com/v/' + cafe.foursquare.id + '" target="_blank">Foursquare</a> & <a href="https://www.google.com/maps/search/?api=1&query=' + cafe.name + '&query_place_id=' + cafe.place_id + '" target="_blank">Google Maps</a></small></div></div></div>';
 }
 
